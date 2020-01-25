@@ -2,36 +2,71 @@
 
 echo "Welcome to flip-Coin-Simulator"
 
-#declaring dictionary
-declare -A Dictionary 
-
 #declaring variables
 H=0
 T=0
 
-# function to flip coin and taking count of heads and tails
+# fuction to flip coins as per users requirement
 flip_coin()
 {
-read -p "Enter how many time you want to flip coin : " flipCoin
+#declaring dictionary
+declare -A Dictionary 
 
-for((i=0;i<flipCoin;i++))
+echo -e "Enter how many flips do you want: \c"
+read flips
+
+for((i=0;i<flips;i++))
 do
-	if [ $((RANDOM%2)) -eq 0 ]
-	then
-		Dictionary[$i]="Heads" # storing result in dictionary
-		let H++
-	else
-		Dictionary[$i]="Tails"
-		let T++
-	fi
+	key=""
+	for((j=0;j<$1;j++))
+	do
+		if (( $((RANDOM%2))==1 ))
+		then
+			key=$key"H"
+		else
+			key=$key"T"
+		fi
+	done
+	Dictionary[$key]=$((${Dictionary[$key]}+1))
 done
+
+echo "Dictionary key : " ${!Dictionary[@]} 
+echo "Dictionary value : " ${Dictionary[@]}
+percentage
+
 }
 
-# calling function
-flip_coin
+# function to calculate percentage 
+percentage()
+{
+for i in ${!Dictionary[@]}
+do
+        Dictionary[$i]=$(echo "scale=2;${Dictionary[$i]} * 100 / $flips" | bc)
+done
+echo "percentage: ${Dictionary[@]}"
 
-# calculating percentage of heads and tails and print it
-echo "Heads percentage :" $(echo "scale=2; $H*100/$flipCoin " | bc)
-echo "Tails percentage :" $(echo "scale=2; $T*100/$flipCoin " | bc)
+}
 
-echo Number of flips of coin : ${Dictionary[@]}
+# loop statement to take users choice
+ans=1
+while (( ans == 1 ))
+do
+	echo "1.Singlet"
+	echo "2.Doublet"
+	read choice	
+
+		case $choice in
+		1)
+			flip_coin 1
+			;;
+		2)
+			flip_coin 2
+			;;
+		*)
+			echo Invalid choice
+			;;
+		esac
+
+	echo -e "Do you want to Continue..?\n press 1->yes/ press 0->no "
+	read ans
+done
