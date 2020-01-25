@@ -53,6 +53,7 @@ while (( ans == 1 ))
 do
 	echo "1.Singlet"
 	echo "2.Doublet"
+	echo "3.Triplet"
 	read choice	
 
 		case $choice in
@@ -62,8 +63,11 @@ do
 		2)
 			flip_coin 2
 			;;
+		3)
+			flip_coin 3
+			;;
 		*)
-			echo Invalid choice
+			echo Invalid Choice
 			;;
 		esac
 
