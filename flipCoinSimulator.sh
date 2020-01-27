@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 echo "Welcome to flip-Coin-Simulator"
 
@@ -44,7 +44,16 @@ do
         Dictionary[$i]=$(echo "scale=2;${Dictionary[$i]} * 100 / $flips" | bc)
 done
 echo "percentage: ${Dictionary[@]}"
+echo "Winning Combination: $(sorting)"
 
+}
+
+sorting()
+{
+	for i in ${!Dictionary[@]}
+	do
+		echo $i ${Dictionary[$i]}
+	done | sort -rn -k2 | head -n 1 
 }
 
 # loop statement to take users choice
